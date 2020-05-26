@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'TCBaseTableVC_Example' do
+  pod 'TCBaseTableVC', :path => '../'
+
+  target 'TCBaseTableVC_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
