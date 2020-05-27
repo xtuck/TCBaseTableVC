@@ -1,0 +1,6 @@
+framework module Pods_TCBaseTableVC_Tests {
+  umbrella header "Pods-TCBaseTableVC_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

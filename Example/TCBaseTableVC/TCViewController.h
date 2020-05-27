@@ -10,4 +10,6 @@
 
 @interface TCViewController : UIViewController
 
+- (void)testChangeSuperClass;
+
 @end

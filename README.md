@@ -1,6 +1,6 @@
 # TCBaseTableVC
 
-[![CI Status](https://img.shields.io/travis/chencheng2046@126.com/TCBaseTableVC.svg?style=flat)](https://travis-ci.org/chencheng2046@126.com/TCBaseTableVC)
+[![CI Status](https://img.shields.io/travis/xtuck/TCBaseTableVC.svg?style=flat)](https://travis-ci.org/xtuck/TCBaseTableVC)
 [![Version](https://img.shields.io/cocoapods/v/TCBaseTableVC.svg?style=flat)](https://cocoapods.org/pods/TCBaseTableVC)
 [![License](https://img.shields.io/cocoapods/l/TCBaseTableVC.svg?style=flat)](https://cocoapods.org/pods/TCBaseTableVC)
 [![Platform](https://img.shields.io/cocoapods/p/TCBaseTableVC.svg?style=flat)](https://cocoapods.org/pods/TCBaseTableVC)
@@ -22,7 +22,7 @@ pod 'TCBaseTableVC'
 
 ## Author
 
-chencheng2046@126.com, 104166631@qq.com
+xtuck:104166631@qq.com
 
 ## License
 

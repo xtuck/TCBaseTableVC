@@ -1,0 +1,1 @@
+../../../../../TCBaseTableVC/Classes/NSObject+BTVCHelper.h

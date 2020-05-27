@@ -7,6 +7,7 @@
 //
 
 #import "TCViewController.h"
+#import "TCTableVCDemo.h"
 
 @interface TCViewController ()
 
@@ -17,7 +18,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(0, 0, 180, 50);
+    btn.backgroundColor = [UIColor greenColor];
+    [btn setTitle:@"BaseTVC Demo" forState:UIControlStateNormal];
+    [self.view addSubview:btn];
+    btn.center = self.view.center;
+    [btn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //更改TCBaseTableVC的父类
+    [TCBaseTableVC forceChangeBaseSuperClass:TCViewController.class];
+}
+
+- (void)clickBtn:(UIButton *)sender {
+    TCTableVCDemo *vc = [[TCTableVCDemo alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)testChangeSuperClass {
+    NSLog(@"继承替换方案成功");
 }
 
 - (void)didReceiveMemoryWarning
