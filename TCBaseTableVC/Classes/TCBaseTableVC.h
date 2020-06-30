@@ -155,6 +155,8 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 ////没有下拉动画的刷新。通常用于首次进入界面时的自动刷新，配合toast菊花使用。
 - (void)refreshWithoutDrag;
 
+- (void)refreshWithoutDragBegin:(dispatch_block_t)beginBlock end:(dispatch_block_t)endBlock;
+
 /**
  获取cell对应的数据model
 

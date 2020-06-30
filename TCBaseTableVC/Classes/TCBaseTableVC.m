@@ -15,6 +15,9 @@ int const kListPagesize = 20;
 
 @interface TCBaseTableVC ()
 
+@property (nonatomic,copy) dispatch_block_t refreshWithoutDragBegin;
+@property (nonatomic,copy) dispatch_block_t refreshWithoutDragEnd;
+
 @end
 
 @implementation TCBaseTableVC
@@ -127,9 +130,19 @@ int const kListPagesize = 20;
 }
 
 - (void)refreshWithoutDrag {
+    [self refreshWithoutDragBegin:nil end:nil];
+}
+
+- (void)refreshWithoutDragBegin:(dispatch_block_t)beginBlock end:(dispatch_block_t)endBlock {
+    self.refreshWithoutDragBegin = beginBlock;
+    self.refreshWithoutDragEnd = endBlock;
+    if (self.refreshWithoutDragBegin) {
+        self.refreshWithoutDragBegin();
+        self.refreshWithoutDragBegin = nil;
+    }
     [self tableViewRefresh];
 }
-    
+
 - (void)tableViewRefresh {
     if (_myTableView.mj_footer.state==MJRefreshStateRefreshing) {
         [_myTableView.mj_header endRefreshing];
@@ -153,6 +166,10 @@ int const kListPagesize = 20;
         __weak typeof(self) weakSelf = self;
         [self fetchListData:^(NSArray *datas,NSError *error,int total) {
             //停止动画
+            if (weakSelf.refreshWithoutDragEnd) {
+                weakSelf.refreshWithoutDragEnd();
+                weakSelf.refreshWithoutDragEnd = nil;
+            }
             [weakSelf.myTableView.mj_header endRefreshing];
             [weakSelf.myTableView.mj_footer endRefreshing];
             //请求失败或者请求接口数据数量为0，pageNumber减1
