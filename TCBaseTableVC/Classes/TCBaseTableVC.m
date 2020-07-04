@@ -17,6 +17,7 @@ int const kListPagesize = 20;
 
 @property (nonatomic,copy) dispatch_block_t refreshWithoutDragBegin;
 @property (nonatomic,copy) dispatch_block_t refreshWithoutDragEnd;
+@property (nonatomic,assign) BOOL isRequsting;
 
 @end
 
@@ -134,6 +135,9 @@ int const kListPagesize = 20;
 }
 
 - (void)refreshWithoutDragBegin:(dispatch_block_t)beginBlock end:(dispatch_block_t)endBlock {
+    if (self.isRequsting) {
+        return;
+    }
     self.refreshWithoutDragBegin = beginBlock;
     self.refreshWithoutDragEnd = endBlock;
     if (self.refreshWithoutDragBegin) {
@@ -144,6 +148,9 @@ int const kListPagesize = 20;
 }
 
 - (void)tableViewRefresh {
+    if (self.isRequsting) {
+        return;
+    }
     if (_myTableView.mj_footer.state==MJRefreshStateRefreshing) {
         [_myTableView.mj_header endRefreshing];
         return;
@@ -153,6 +160,9 @@ int const kListPagesize = 20;
 }
 
 - (void)tableViewLoadMore {
+    if (self.isRequsting) {
+        return;
+    }
     if (_myTableView.mj_header.state==MJRefreshStateRefreshing) {
         [_myTableView.mj_footer endRefreshing];
         return;
@@ -162,9 +172,11 @@ int const kListPagesize = 20;
 }
 
 - (void)fetchListDataIsLoadMore:(BOOL)isLoadMore {
+    self.isRequsting = YES;
     if ([self respondsToSelector:@selector(fetchListData:)]) {
         __weak typeof(self) weakSelf = self;
         [self fetchListData:^(NSArray *datas,NSError *error,int total) {
+            weakSelf.isRequsting = NO;
             //停止动画
             if (weakSelf.refreshWithoutDragEnd) {
                 weakSelf.refreshWithoutDragEnd();
@@ -209,6 +221,7 @@ int const kListPagesize = 20;
 //MARK: - 模拟延时关闭上拉下拉刷新的动画效果（仅用于子类未实现fetchListData:方法）
 - (void)simulateStopRefreshAnimation {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.isRequsting = NO;
         [self->_myTableView.mj_header endRefreshing];
         [self->_myTableView.mj_footer endRefreshing];
     });
