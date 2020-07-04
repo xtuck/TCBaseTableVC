@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TCBaseTableVC'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of TCBaseTableVC.'
+  s.version          = '0.1.1'
+  s.summary          = 'TableView基类，列表使用更加方便，统一了数据请求和翻页逻辑'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
