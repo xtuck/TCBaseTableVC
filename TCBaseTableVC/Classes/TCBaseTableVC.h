@@ -132,6 +132,9 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 //获取列表数据，子类实现
 - (void)fetchListData:(RequestListDataFinishBlock)finishBlock;
 
+//请求结束后的回调，便于统一处理error逻辑，子类实现
+- (void)fetchListDataEnd:(NSArray *)result error:(NSError *)error;
+
 @end
 
 
@@ -151,12 +154,10 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 
 @property (nonatomic, assign) BOOL isForcePlainGroup;                   //在UITableViewStylePlain样式下是否进行分组
 
-    
+@property (nonatomic,assign,readonly) BOOL isRequsting;                 //是否正在执行请求中
+
 ////没有下拉动画的刷新。通常用于首次进入界面时的自动刷新，配合toast菊花使用。
 - (void)refreshWithoutDrag;
-
-- (void)refreshWithoutDragBegin:(dispatch_block_t)beginBlock end:(dispatch_block_t)endBlock;
-
 /**
  获取cell对应的数据model
 
