@@ -7,11 +7,7 @@
 //
 
 #import "TCBaseTableVC.h"
-#import "TCBaseCell.h"
 #import <Masonry/Masonry.h>
-#import "UITableView+BTVCHelper.h"
-
-int const kListPagesize = 10;
 
 @implementation TCBaseTableVC
     
@@ -300,7 +296,9 @@ int const kListPagesize = 10;
         cellHelper.cellClass = UITableViewCell.class;
     }
     if (!cellHelper.reuseId) {
-        cellHelper.reuseId = cellHelper.cellClass.classStr.UTF8String;
+        /// 获取class对应的字符串，兼容swift
+        NSString *classNameRel = [NSStringFromClass(cellHelper.cellClass) componentsSeparatedByString:@"."].lastObject;
+        cellHelper.reuseId = classNameRel.UTF8String;
     }
     return cellHelper;
 }

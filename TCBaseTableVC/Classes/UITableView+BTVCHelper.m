@@ -5,23 +5,6 @@
 //
 
 #import "UITableView+BTVCHelper.h"
-#import <objc/runtime.h>
-
-//两个类的实例方法交换
-static inline void btvc_swizzle2InstanceSelector(Class originalClass, Class swizzledClass, SEL originalSelector, SEL swizzledSelector) {
-    Method originalMethod = class_getInstanceMethod(originalClass, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(swizzledClass, swizzledSelector);
-    if (class_addMethod(originalClass, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))) {
-        class_replaceMethod(originalClass, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
-//单个类中的实例方法交换
-static inline void btvc_swizzleSelector(Class clazz, SEL originalSelector, SEL swizzledSelector) {
-    btvc_swizzle2InstanceSelector(clazz, clazz, originalSelector, swizzledSelector);
-}
 
 
 @implementation UITableView (BTVCHelper)
@@ -94,8 +77,10 @@ static inline void btvc_swizzleSelector(Class clazz, SEL originalSelector, SEL s
 }
 
 - (void)tc_registerNibForCell:(Class)clazz reuseID:(NSString *)reuseID {
+    /// 获取class对应的字符串，兼容swift
+    NSString *classNameRel = [NSStringFromClass(clazz) componentsSeparatedByString:@"."].lastObject;
     BOOL isNeedRegister = YES;
-    reuseID = reuseID?:clazz.classStr;
+    reuseID = reuseID?:classNameRel;
     if (reuseID) {
         if ([self.rtc_reuseIDs containsObject:reuseID]) {
             isNeedRegister = NO;
@@ -104,7 +89,6 @@ static inline void btvc_swizzleSelector(Class clazz, SEL originalSelector, SEL s
         }
     }
     if (isNeedRegister) {
-        NSString *classNameRel = clazz.classStr;
         if ([self isNibExistInBundle:[NSBundle mainBundle] nibName:classNameRel]) {
             [self registerNib:[UINib nibWithNibName:classNameRel bundle:nil] forCellReuseIdentifier:reuseID];
             [self.rtc_allNibReuseIDsAndClass setObject:classNameRel forKey:reuseID];
