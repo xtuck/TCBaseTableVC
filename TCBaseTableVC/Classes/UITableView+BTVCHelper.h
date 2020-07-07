@@ -30,7 +30,7 @@ static inline void btvc_swizzleSelector(Class clazz, SEL originalSelector, SEL s
 - (void)tc_registerNibForCell:(Class)clazz reuseID:(NSString *)reuseID;
 
 /**
- 清除cell重用的缓存，特殊情况下可用，一般用不到
+ 忽略cell重用的缓存，实现重新创建对应的cell，特殊情况下可用，一般用不到
  @param reuseID cell的reuseID
  */
 - (void)tc_clearCellReuseId:(NSString *)reuseID;

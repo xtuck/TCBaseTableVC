@@ -2,7 +2,7 @@
 //  UITableView+TCEasy.m
 //  TCBaseTableVC
 //
-//  Created by fengunion on 2020/7/6.
+//  Created by xtuck on 2020/7/6.
 //
 
 #import "UITableView+TCEasy.h"
@@ -327,24 +327,26 @@ int const kListPagesize = 10;
         tableView.delegate = delegate;
         //注意：已将dataSource设置为传入delegate，所以在delegate中可以去自由实现dataSource协议
         tableView.dataSource = (id)delegate;
-//        //判断是否有空态页，已更改为根据isShowEmptyData来判断
-//        SEL emptyImgSel = NSSelectorFromString(@"imageForEmptyDataSet:");
-//        if ([delegate respondsToSelector:emptyImgSel]) {
-//            IMP imp = [(NSObject *)delegate methodForSelector:emptyImgSel];
-//            UIImage *(*func)(id, SEL, id) = (void *)imp;
-//            UIImage *empImg = func(delegate, emptyImgSel,nil);
-//            if (empImg) {
-//                tableView.emptyDataSetSource = (id)delegate;
-//                tableView.emptyDataSetDelegate = (id)delegate;
-//            }
-//        }
         tableView.emptyDataSetSource = (id)delegate;
         tableView.emptyDataSetDelegate = (id)delegate;
-
+        
+        //判断是否有空态页，已更改为根据isShowEmptyData来判断
+        /*
+        SEL emptyImgSel = NSSelectorFromString(@"imageForEmptyDataSet:");
+        if ([delegate respondsToSelector:emptyImgSel]) {
+            IMP imp = [(NSObject *)delegate methodForSelector:emptyImgSel];
+            UIImage *(*func)(id, SEL, id) = (void *)imp;
+            UIImage *empImg = func(delegate, emptyImgSel,nil);
+            if (empImg) {
+                tableView.emptyDataSetSource = (id)delegate;
+                tableView.emptyDataSetDelegate = (id)delegate;
+            }
+        }
+         */
+        
         if ([delegate respondsToSelector:@selector(tableViewCreated:)]) {
             [delegate tableViewCreated:tableView];
         }
-        
         return tableView;
     };
 }
@@ -467,42 +469,27 @@ bool emptyDataShouldDisplay(id obj, SEL selector, UIScrollView *sc) {
         //self.class是UITableView.class或其子类
         [self.class checkEasyProtocolWithClass:clazz];
     }
+    [clazz addUnrealizedProtocol:@selector(numberOfSectionsInTableView:) imp:(IMP)numberOfSections types:"l@:@"];
+    [clazz addUnrealizedProtocol:@selector(tableView:numberOfRowsInSection:) imp:(IMP)numberOfRows types:"l@:@@"];
+    [clazz addUnrealizedProtocol:@selector(tableView:cellForRowAtIndexPath:) imp:(IMP)cellForRow types:"@@:@@"];
+    [clazz addUnrealizedProtocol:@selector(tableView:heightForRowAtIndexPath:) imp:(IMP)heightForRow types:"f@:@@"];
+    [clazz addUnrealizedProtocol:@selector(tableView:didSelectRowAtIndexPath:) imp:(IMP)didSelectRow types:"v@:@@"];
 
-    SEL didSelect = @selector(tableView:didSelectRowAtIndexPath:);
-    if (![clazz instancesRespondToSelector:didSelect]) {
-        class_addMethod(clazz, didSelect, (IMP)didSelectRow, "v@:@@");
-    }
-    
-    SEL numberOfSecSEL = @selector(numberOfSectionsInTableView:);
-    if (![clazz instancesRespondToSelector:numberOfSecSEL]) {
-        class_addMethod(clazz, numberOfSecSEL, (IMP)numberOfSections, "l@:@");
-    }
+    //emptyData相关检查
+    [clazz addUnrealizedProtocol:@selector(emptyDataSetShouldAllowScroll:) imp:(IMP)emptyDataShouldScroll types:"B@:@"];
+    [clazz addUnrealizedProtocol:@selector(emptyDataSetShouldDisplay:) imp:(IMP)emptyDataShouldDisplay types:"B@:@"];
+}
 
-    SEL numberOfRowsSEL = @selector(tableView:numberOfRowsInSection:);
-    if (![clazz instancesRespondToSelector:numberOfRowsSEL]) {
-        class_addMethod(clazz, numberOfRowsSEL, (IMP)numberOfRows, "l@:@@");
-    }
+@end
 
-    SEL cellForRowSEL = @selector(tableView:cellForRowAtIndexPath:);
-    if (![clazz instancesRespondToSelector:cellForRowSEL]) {
-        class_addMethod(clazz, cellForRowSEL, (IMP)cellForRow, "@@:@@");
-    }
-    
-    SEL cellHeightSEL = @selector(tableView:heightForRowAtIndexPath:);
-    if (![clazz instancesRespondToSelector:cellHeightSEL]) {
-        class_addMethod(clazz, cellHeightSEL, (IMP)heightForRow, "f@:@@");
-    }
-    
-    //emptyDataSetSource emptyDataSetDelegate 相关检查
-    SEL emptyScroll = @selector(emptyDataSetShouldAllowScroll:);
-    if (![clazz instancesRespondToSelector:emptyScroll]) {
-        class_addMethod(clazz, emptyScroll, (IMP)emptyDataShouldScroll, "B@:@");
-    }
+@implementation NSObject (AddUnrealizedProtocol)
 
-    SEL emptyDisplay = @selector(emptyDataSetShouldDisplay:);
-    if (![clazz instancesRespondToSelector:emptyDisplay]) {
-        class_addMethod(clazz, emptyDisplay, (IMP)emptyDataShouldScroll, "B@:@");
+- (BOOL)addUnrealizedProtocol:(SEL)sel imp:(IMP)imp types:(const char *)types {
+    if (![self.class instancesRespondToSelector:sel]) {
+        class_addMethod(self.class, sel, imp, types);
+        return YES;
     }
+    return NO;
 }
 
 @end

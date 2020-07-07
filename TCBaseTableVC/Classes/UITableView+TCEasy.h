@@ -2,7 +2,7 @@
 //  UITableView+TCEasy.h
 //  TCBaseTableVC
 //
-//  Created by fengunion on 2020/7/6.
+//  Created by xtuck on 2020/7/6.
 //
 
 #import "UITableView+BTVCHelper.h"
@@ -91,23 +91,23 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 - (CellHelper)cellParamsFromFeed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath;
 
 
-/// tableView创建完毕，子类可继续进行定制化设置，也可以在子类的[super viewDidLoad]之后对tableView进行设置
-/// @param tableView 创建好的tableView = self.myTableView
+/// tableView创建完毕，可继续进行定制化设置，如果使用的是TCBaseTableVC继承方式，也可以在子类的[super viewDidLoad]之后对tableView进行设置
+/// @param tableView 创建好的tableView
 - (void)tableViewCreated:(UITableView *)tableView;
 
 
-/// 子类中自定义头部刷新的样式
-/// @param tableView tableView = self.myTableView
-/// @param refreshSEL 父类中刷新时调用的方法，子类中定义样式时需传入此方法
+/// 自定义头部刷新的样式
+/// @param tableView tableView
+/// @param refreshSEL 刷新时调用的方法，定义样式时需传入此方法
 - (void)customRefreshHeader:(UITableView *)tableView refreshSEL:(SEL)refreshSEL;
 
-/// 子类中自定义头部刷新的样式
-/// @param tableView tableView = self.myTableView
-/// @param loadMoreSEL 父类中加载更多时调用的方法，子类中定义样式时需传入此方法
+/// 自定义底部刷新的样式
+/// @param tableView tableView
+/// @param loadMoreSEL 加载更多时调用的方法，定义样式时需传入此方法
 - (void)customLoadMoreFooter:(UITableView *)tableView loadMoreSEL:(SEL)loadMoreSEL;
 
 /**
- 设置cell的高度，如果子类不实现，则使用自动布局
+ 设置cell的高度，如果不实现，则使用自动布局
  
  @param feed cell对应的数据model
  @param indexPath cell对应的indexPath
@@ -116,14 +116,14 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 - (CGFloat)setCellHeightWithFeed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath;
 
 /**
- *  创建cell,子类可重写
+ *  创建cell，如果不实现，则使用UITableView+TCEasy中的同名方法
  *
  *  @return 返回创建好的cell
  */
 - (UITableViewCell *)createCellWithFeed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath;
 
 /**
- *  传入数据对象，设置cell的数据显示，可子类重写
+ *  传入数据对象，设置cell的数据显示，如果不实现，则使用UITableView+TCEasy中的同名方法
  *
  *  @param feed      需要显示在cell上面的数据对象
  *  @param indexPath 当前cell的indexPath
@@ -131,7 +131,7 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 - (void)setCell:(UITableViewCell *)cell feed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath;
 
 /**
- 点击cell事件,子类实现
+ 点击cell事件
 
  @param feed 当前cell对应的数据
  @param indexPath cell对应的indexPath
@@ -141,15 +141,22 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 //获取列表数据
 - (void)fetchListData:(RequestListDataFinishBlock)finishBlock;
 
-//请求结束后的回调，便于统一处理error逻辑
+//请求结束后的回调，便于统一处理error等逻辑
 - (void)fetchListDataEnd:(NSArray *)result error:(NSError *)error;
 
 @end
 
 @protocol TCEasyCheckProtocoleExtensions <NSObject>
 
-//检查协议的扩展，请自己创建UITableView分类去实现，会优先于checkProtocol:
+//检查协议的扩展，请自己创建UITableView分类去实现，会先于checkProtocol:执行
 + (void)checkEasyProtocolWithClass:(Class)clazz;
+
+@end
+
+@interface NSObject (AddUnrealizedProtocol)
+
+/// 动态添加未实现的实例方法，如果已实现或已添加，则返回NO,如果未实现，则会添加，并返回YES
+- (BOOL)addUnrealizedProtocol:(SEL)sel imp:(IMP)imp types:(const char *)types;
 
 @end
 
@@ -159,7 +166,7 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 
 @property (nonatomic, assign) BOOL isShowRefreshView;                  // 是否显示下拉刷新视图控件； default is NO;
 @property (nonatomic, assign) BOOL isShowLoadMoreView;                 // 是否显示上拉加载视图控件； default is NO;
-@property (nonatomic, assign) BOOL isForcePlainGroup;                  // 在UITableViewStylePlain样式下是否进行分组 default is NO;
+@property (nonatomic, assign) BOOL isForcePlainGroup;                  // 在UITableViewStylePlain样式下是否进行分组； default is NO;
 @property (nonatomic, assign) BOOL isShowEmptyData;                    // 是否显示空态图相关数据；   default is NO;
 
 @property (nonatomic,assign) int pageSize;                             //每一页多少行数据；当pageSize<=0时，使用kListPagesize
