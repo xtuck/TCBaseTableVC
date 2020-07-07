@@ -327,7 +327,17 @@ int const kListPagesize = 10;
         tableView.delegate = delegate;
         //注意：已将dataSource设置为传入delegate，所以在delegate中可以去自由实现dataSource协议
         tableView.dataSource = (id)delegate;
-
+//        //判断是否有空态页，已更改为根据isShowEmptyData来判断
+//        SEL emptyImgSel = NSSelectorFromString(@"imageForEmptyDataSet:");
+//        if ([delegate respondsToSelector:emptyImgSel]) {
+//            IMP imp = [(NSObject *)delegate methodForSelector:emptyImgSel];
+//            UIImage *(*func)(id, SEL, id) = (void *)imp;
+//            UIImage *empImg = func(delegate, emptyImgSel,nil);
+//            if (empImg) {
+//                tableView.emptyDataSetSource = (id)delegate;
+//                tableView.emptyDataSetDelegate = (id)delegate;
+//            }
+//        }
         tableView.emptyDataSetSource = (id)delegate;
         tableView.emptyDataSetDelegate = (id)delegate;
 
@@ -447,10 +457,7 @@ bool emptyDataShouldDisplay(id obj, SEL selector, UIScrollView *sc) {
         objc_setAssociatedObject(sc, &isFristExe, @(YES), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         return NO;
     }
-    if ([sc respondsToSelector:@selector(isShowEmptyData)]) {
-        return [(UITableView *)sc isShowEmptyData];
-    }
-    return YES;
+    return [(UITableView *)sc isShowEmptyData];
 }
 
 + (void)checkProtocol:(Class)clazz {
@@ -494,7 +501,7 @@ bool emptyDataShouldDisplay(id obj, SEL selector, UIScrollView *sc) {
 
     SEL emptyDisplay = @selector(emptyDataSetShouldDisplay:);
     if (![clazz instancesRespondToSelector:emptyDisplay]) {
-        class_addMethod(clazz, emptyDisplay, (IMP)emptyDataShouldDisplay, "B@:@");
+        class_addMethod(clazz, emptyDisplay, (IMP)emptyDataShouldScroll, "B@:@");
     }
 }
 
