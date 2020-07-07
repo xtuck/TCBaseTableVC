@@ -55,7 +55,14 @@ TableViewHelperMake(Class tvClass, UITableViewStyle tvStyle, CGRect tvFrame) {
  */
 typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int total);
 
-
+/// UITableViewDataSource 中有2个@required协议，如果添加<UITableViewDataSource>,就会有警告
+/// 所以通过运行时动态添加了以下三个协议方法，可在easyDelegate对象中重写
+/// 其他协议方法可在easyDelegate对象中自行实现，且不需要在easyDelegate的@interface后面加<UITableViewDataSource>
+/*
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+*/
 @protocol TCEasyTableViewDelegate <UITableViewDelegate,DZNEmptyDataSetDelegate,DZNEmptyDataSetSource>
 
 @optional
@@ -139,6 +146,12 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 
 @end
 
+@protocol TCEasyCheckProtocoleExtensions <NSObject>
+
+//检查协议的扩展，请自己创建UITableView分类去实现，会优先于checkProtocol:
++ (void)checkEasyProtocolWithClass:(Class)clazz;
+
+@end
 
 @interface UITableView (TCEasy)
 
@@ -146,7 +159,8 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 
 @property (nonatomic, assign) BOOL isShowRefreshView;                  // 是否显示下拉刷新视图控件； default is NO;
 @property (nonatomic, assign) BOOL isShowLoadMoreView;                 // 是否显示上拉加载视图控件； default is NO;
-@property (nonatomic, assign) BOOL isForcePlainGroup;                  // 在UITableViewStylePlain样式下是否进行分组
+@property (nonatomic, assign) BOOL isForcePlainGroup;                  // 在UITableViewStylePlain样式下是否进行分组 default is NO;
+@property (nonatomic, assign) BOOL isShowEmptyData;                    // 是否显示空态图相关数据；   default is NO;
 
 @property (nonatomic,assign) int pageSize;                             //每一页多少行数据；当pageSize<=0时，使用kListPagesize
 @property (nonatomic,assign,readonly) int pageNumber;                  //加载更多时候的请求分页页数
@@ -171,30 +185,12 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 - (NSObject *)fetchFeedWithIndexPath:(NSIndexPath *)indexPath;
 
 
-
-//当控制器中必须要实现UITableViewDataSource或UITableViewDataDelegate的方法时，
-//在方法中调用下面的方法，可以将部分方法的实现转嫁给TCEasyTableViewDelegate，从而省掉大量逻辑代码
+/*
 - (UITableViewCell *)easy_cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSInteger)easy_numberOfRowsInSection:(NSInteger)section;
 - (NSInteger)easy_numberOfSections;
 - (CGFloat)easy_heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)easy_didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-//例如：以下仅是举例
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [tableView easy_didSelectRowAtIndexPath:indexPath];
-//}
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return [tableView easy_cellForRowAtIndexPath:indexPath];
-//}
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    return [tableView easy_numberOfRowsInSection:section];
-//}
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//    return [tableView easy_numberOfSections];
-//}
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return [tableView easy_heightForRowAtIndexPath:indexPath];
-//}
-
+*/
 
 @end

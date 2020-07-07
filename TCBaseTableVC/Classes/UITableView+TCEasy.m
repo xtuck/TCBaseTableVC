@@ -37,6 +37,16 @@ int const kListPagesize = 10;
     return objc_getAssociatedObject(self, _cmd);
 }
 
+#pragma mark- isShowEmptyData
+- (void)setIsShowEmptyData:(BOOL)isShowEmptyData {
+    objc_setAssociatedObject(self, @selector(isShowEmptyData), @(isShowEmptyData), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (BOOL)isShowEmptyData {
+    NSNumber *num = objc_getAssociatedObject(self, _cmd);
+    return num.boolValue;
+}
+
+
 #pragma mark- isForcePlainGroup
 - (void)setIsForcePlainGroup:(BOOL)isForcePlainGroup {
     objc_setAssociatedObject(self, @selector(isForcePlainGroup), @(isForcePlainGroup), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -176,7 +186,7 @@ int const kListPagesize = 10;
 
 - (void)fetchListDataIsLoadMore:(BOOL)isLoadMore {
     self.isRequsting = YES;
-    NSLog(@"easyDelegate class: %@",NSStringFromClass(self.easyDelegate.class));
+    //NSLog(@"easyDelegate class: %@",NSStringFromClass(self.easyDelegate.class));
     if ([self.easyDelegate respondsToSelector:@selector(fetchListData:)]) {
         __weak typeof(self) weakSelf = self;
         [self.easyDelegate fetchListData:^(NSArray *datas,NSError *error,int total) {
@@ -293,18 +303,6 @@ int const kListPagesize = 10;
         }
         [addOnView addSubview:tableView];
 
-        //判断是否有空态页
-        SEL emptyImgSel = NSSelectorFromString(@"imageForEmptyDataSet:");
-        if ([delegate respondsToSelector:emptyImgSel]) {
-            IMP imp = [(NSObject *)delegate methodForSelector:emptyImgSel];
-            UIImage *(*func)(id, SEL, id) = (void *)imp;
-            UIImage *empImg = func(delegate, emptyImgSel,nil);
-            if (empImg) {
-                tableView.emptyDataSetSource = (id)delegate;
-                tableView.emptyDataSetDelegate = (id)delegate;
-            }
-        }
-
         if (CGRectIsEmpty(tableView.frame) && tableView.superview) {
             [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
                 if (@available(iOS 11.0, *)) {
@@ -329,6 +327,9 @@ int const kListPagesize = 10;
         tableView.delegate = delegate;
         //注意：已将dataSource设置为传入delegate，所以在delegate中可以去自由实现dataSource协议
         tableView.dataSource = (id)delegate;
+
+        tableView.emptyDataSetSource = (id)delegate;
+        tableView.emptyDataSetDelegate = (id)delegate;
 
         if ([delegate respondsToSelector:@selector(tableViewCreated:)]) {
             [delegate tableViewCreated:tableView];
@@ -433,8 +434,32 @@ CGFloat heightForRow(id obj, SEL selector, UITableView *tb, NSIndexPath *indexPa
     return [tb easy_heightForRowAtIndexPath:indexPath];
 }
 
+
+bool emptyDataShouldScroll(id obj, SEL selector, UIScrollView *sc) {
+    return YES;
+}
+
+bool emptyDataShouldDisplay(id obj, SEL selector, UIScrollView *sc) {
+    //设置第一次不显示，避免加载数据之前显示空态页
+    NSString * const isFristExe = @"emptyDataShouldDisplayIsFristExe";
+    NSNumber *isHadExe = objc_getAssociatedObject(sc, &isFristExe);
+    if (!isHadExe) {
+        objc_setAssociatedObject(sc, &isFristExe, @(YES), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        return NO;
+    }
+    if ([sc respondsToSelector:@selector(isShowEmptyData)]) {
+        return [(UITableView *)sc isShowEmptyData];
+    }
+    return YES;
+}
+
 + (void)checkProtocol:(Class)clazz {
     if (!clazz) return;
+    
+    if ([self.class respondsToSelector:@selector(checkEasyProtocolWithClass:)]) {
+        //self.class是UITableView.class或其子类
+        [self.class checkEasyProtocolWithClass:clazz];
+    }
 
     SEL didSelect = @selector(tableView:didSelectRowAtIndexPath:);
     if (![clazz instancesRespondToSelector:didSelect]) {
@@ -460,5 +485,17 @@ CGFloat heightForRow(id obj, SEL selector, UITableView *tb, NSIndexPath *indexPa
     if (![clazz instancesRespondToSelector:cellHeightSEL]) {
         class_addMethod(clazz, cellHeightSEL, (IMP)heightForRow, "f@:@@");
     }
+    
+    //emptyDataSetSource emptyDataSetDelegate 相关检查
+    SEL emptyScroll = @selector(emptyDataSetShouldAllowScroll:);
+    if (![clazz instancesRespondToSelector:emptyScroll]) {
+        class_addMethod(clazz, emptyScroll, (IMP)emptyDataShouldScroll, "B@:@");
+    }
+
+    SEL emptyDisplay = @selector(emptyDataSetShouldDisplay:);
+    if (![clazz instancesRespondToSelector:emptyDisplay]) {
+        class_addMethod(clazz, emptyDisplay, (IMP)emptyDataShouldDisplay, "B@:@");
+    }
 }
+
 @end
