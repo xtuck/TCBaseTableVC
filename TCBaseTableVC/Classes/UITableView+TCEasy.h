@@ -175,9 +175,11 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 @property (nonatomic,weak,readonly) id<TCEasyTableViewDelegate> easyDelegate;
 
 
-//delegate和dataSource大多数情况都是放在一个对象里面，所以此处只用了一个delegate参数，后期可以扩展将dataSource分开
-+ (UITableView *(^)(id<TCEasyTableViewDelegate>delegate,UIView *addOnView))create;
+//delegate和dataSource大多数情况都是放在一个对象里面，所以此处只用了一个delegate参数
++ (UITableView *(^)(id<TCEasyTableViewDelegate>delegate,UIView *addOnView))easyCreate;
 
+//当使用xib或者其他方式创建了tableview，调用下面方法进行快速配置
+- (void (^)(id<TCEasyTableViewDelegate>delegate,UIView *addOnView))easyConfig;
 
 - (void)refreshWithDrag;
 
@@ -191,13 +193,12 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
  */
 - (NSObject *)fetchFeedWithIndexPath:(NSIndexPath *)indexPath;
 
-
 /*
 - (UITableViewCell *)easy_cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (NSInteger)easy_numberOfRowsInSection:(NSInteger)section;
-- (NSInteger)easy_numberOfSections;
 - (CGFloat)easy_heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)easy_didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (NSInteger)easy_numberOfRowsInSection:(NSInteger)section;
+- (NSInteger)easy_numberOfSections;
 */
 
 @end

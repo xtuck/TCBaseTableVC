@@ -285,12 +285,49 @@ int const kListPagesize = 10;
     }
 }
 
-
-
-+ (UITableView *(^)(id<TCEasyTableViewDelegate>,UIView *))create {
+- (void (^)(id<TCEasyTableViewDelegate>delegate,UIView *addOnView))easyConfig {
     return ^(id<TCEasyTableViewDelegate>delegate,UIView *addOnView) {
         //检查代理是否实现，运行时添加方法，需要方法设置tableView.delegate之前调用
         [UITableView checkProtocol:delegate.class];
+        [addOnView addSubview:self];
+
+        if (CGRectIsEmpty(self.frame) && self.superview) {
+            [self mas_makeConstraints:^(MASConstraintMaker *make) {
+                if (@available(iOS 11.0, *)) {
+                    make.top.equalTo(self.superview.mas_safeAreaLayoutGuideTop);
+                    make.bottom.equalTo(self.superview.mas_safeAreaLayoutGuideBottom);
+                    make.left.equalTo(self.superview.mas_safeAreaLayoutGuideLeft);
+                    make.right.equalTo(self.superview.mas_safeAreaLayoutGuideRight);
+                } else {
+                    make.edges.equalTo(self.superview);
+                }
+            }];
+        }
+        
+        if (@available(ios 11.0,*)) {
+            self.estimatedSectionHeaderHeight = 0;
+            self.estimatedSectionFooterHeight = 0;
+        }
+        self.separatorInset = UIEdgeInsetsZero;
+        self.layoutMargins = UIEdgeInsetsZero;
+        self.tableFooterView = [[UIView alloc] init];
+    
+        self.easyDelegate = delegate;
+        self.delegate = delegate;
+        //注意：已将dataSource设置为传入delegate，所以在delegate中可以去自由实现dataSource协议
+        self.dataSource = (id)delegate;
+        self.emptyDataSetSource = (id)delegate;
+        self.emptyDataSetDelegate = (id)delegate;
+        
+        if ([delegate respondsToSelector:@selector(tableViewCreated:)]) {
+            [delegate tableViewCreated:self];
+        }
+    };
+}
+
++ (UITableView *(^)(id<TCEasyTableViewDelegate>,UIView *))easyCreate {
+    return ^(id<TCEasyTableViewDelegate>delegate,UIView *addOnView) {
+        //检查代理是否实现，运行时添加方法，需要方法设置tableView.delegate之前调用
         UITableView *tableView;
         if ([delegate respondsToSelector:@selector(useOtherTableView)]) {
             tableView = [delegate useOtherTableView];
@@ -301,52 +338,7 @@ int const kListPagesize = 10;
         } else {
             tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         }
-        [addOnView addSubview:tableView];
-
-        if (CGRectIsEmpty(tableView.frame) && tableView.superview) {
-            [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                if (@available(iOS 11.0, *)) {
-                    make.top.equalTo(tableView.superview.mas_safeAreaLayoutGuideTop);
-                    make.bottom.equalTo(tableView.superview.mas_safeAreaLayoutGuideBottom);
-                    make.left.equalTo(tableView.superview.mas_safeAreaLayoutGuideLeft);
-                    make.right.equalTo(tableView.superview.mas_safeAreaLayoutGuideRight);
-                } else {
-                    make.edges.equalTo(tableView.superview);
-                }
-            }];
-        }
-        if (@available(ios 11.0,*)) {
-            tableView.estimatedSectionHeaderHeight = 0;
-            tableView.estimatedSectionFooterHeight = 0;
-        }
-        tableView.separatorInset = UIEdgeInsetsZero;
-        tableView.layoutMargins = UIEdgeInsetsZero;
-        tableView.tableFooterView = [[UIView alloc] init];
-    
-        tableView.easyDelegate = delegate;
-        tableView.delegate = delegate;
-        //注意：已将dataSource设置为传入delegate，所以在delegate中可以去自由实现dataSource协议
-        tableView.dataSource = (id)delegate;
-        tableView.emptyDataSetSource = (id)delegate;
-        tableView.emptyDataSetDelegate = (id)delegate;
-        
-        //判断是否有空态页，已更改为根据isShowEmptyData来判断
-        /*
-        SEL emptyImgSel = NSSelectorFromString(@"imageForEmptyDataSet:");
-        if ([delegate respondsToSelector:emptyImgSel]) {
-            IMP imp = [(NSObject *)delegate methodForSelector:emptyImgSel];
-            UIImage *(*func)(id, SEL, id) = (void *)imp;
-            UIImage *empImg = func(delegate, emptyImgSel,nil);
-            if (empImg) {
-                tableView.emptyDataSetSource = (id)delegate;
-                tableView.emptyDataSetDelegate = (id)delegate;
-            }
-        }
-         */
-        
-        if ([delegate respondsToSelector:@selector(tableViewCreated:)]) {
-            [delegate tableViewCreated:tableView];
-        }
+        tableView.easyConfig(delegate,addOnView);
         return tableView;
     };
 }
@@ -453,10 +445,10 @@ bool emptyDataShouldScroll(id obj, SEL selector, UIScrollView *sc) {
 
 bool emptyDataShouldDisplay(id obj, SEL selector, UIScrollView *sc) {
     //设置第一次不显示，避免加载数据之前显示空态页
-    NSString * const isFristExe = @"emptyDataShouldDisplayIsFristExe";
-    NSNumber *isHadExe = objc_getAssociatedObject(sc, &isFristExe);
+    NSString *isFristExe = @"emptyDataShouldDisplayIsFristExe";
+    NSNumber *isHadExe = objc_getAssociatedObject(sc, isFristExe.UTF8String);
     if (!isHadExe) {
-        objc_setAssociatedObject(sc, &isFristExe, @(YES), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(sc, isFristExe.UTF8String, @(YES), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         return NO;
     }
     return [(UITableView *)sc isShowEmptyData];
