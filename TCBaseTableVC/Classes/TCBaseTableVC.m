@@ -174,9 +174,7 @@
                 }
                 //pageSize 单页最大条数
                 int tempPagesize = weakSelf.pageSize > 0 ? weakSelf.pageSize : kListPagesize;
-                if (datas.count < tempPagesize
-                    || total <= weakSelf.cellDataList.count
-                    || total <= weakSelf.pageNumber*tempPagesize) {
+                if (datas.count < tempPagesize || (total > 0 && (total <= weakSelf.cellDataList.count || total <= weakSelf.pageNumber*tempPagesize))) {
                     [weakSelf.myTableView.mj_footer endRefreshingWithNoMoreData];
                 }
             } else {

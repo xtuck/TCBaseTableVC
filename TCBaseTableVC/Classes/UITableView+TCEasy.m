@@ -213,9 +213,7 @@ int const kListPagesize = 10;
                 }
                 //pageSize 单页最大条数
                 int tempPagesize = weakSelf.pageSize > 0 ? weakSelf.pageSize : kListPagesize;
-                if (datas.count < tempPagesize
-                    || total <= weakSelf.cellDataList.count
-                    || total <= weakSelf.pageNumber*tempPagesize) {
+                if (datas.count < tempPagesize || (total > 0 && (total <= weakSelf.cellDataList.count || total <= weakSelf.pageNumber*tempPagesize))) {
                     [weakSelf.mj_footer endRefreshingWithNoMoreData];
                 }
             } else {
