@@ -9,6 +9,12 @@
 #import "TCBaseTableVC.h"
 #import <Masonry/Masonry.h>
 
+@interface TCBaseTableVC ()
+
+@property (nonatomic,assign,readwrite) BOOL isRequsting;                 //是否正在执行请求中
+
+@end
+
 @implementation TCBaseTableVC
     
 - (NSMutableArray *)cellDataList {
@@ -151,8 +157,7 @@
     if ([self respondsToSelector:@selector(fetchListData:)]) {
         __weak typeof(self) weakSelf = self;
         [self fetchListData:^(NSArray *datas,NSError *error,int total) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            strongSelf->_isRequsting = NO;
+            weakSelf.isRequsting = NO;
             if ([weakSelf respondsToSelector:@selector(fetchListDataEnd:error:)]) {
                 [weakSelf performSelector:@selector(fetchListDataEnd:error:) withObject:datas withObject:error];
             }

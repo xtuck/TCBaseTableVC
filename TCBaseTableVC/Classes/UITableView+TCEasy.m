@@ -190,8 +190,7 @@ int const kListPagesize = 10;
     if ([self.easyDelegate respondsToSelector:@selector(fetchListData:)]) {
         __weak typeof(self) weakSelf = self;
         [self.easyDelegate fetchListData:^(NSArray *datas,NSError *error,int total) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            strongSelf.isRequsting = NO;
+            weakSelf.isRequsting = NO;
             if ([weakSelf.easyDelegate respondsToSelector:@selector(fetchListDataEnd:error:)]) {
                 [weakSelf.easyDelegate performSelector:@selector(fetchListDataEnd:error:) withObject:datas withObject:error];
             }
