@@ -2,7 +2,7 @@ PODS:
   - DZNEmptyDataSet (1.8.1)
   - Masonry (1.1.0)
   - MJRefresh (3.2.0)
-  - TCBaseTableVC (0.1.0):
+  - TCBaseTableVC (0.1.1):
     - DZNEmptyDataSet
     - Masonry
     - MJRefresh
@@ -24,7 +24,7 @@ SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
-  TCBaseTableVC: c91dbc98737fe90ab0252132e7794a3c23fe0bf9
+  TCBaseTableVC: 84651b96df98cfc40ec0006265eb6c5008cbf18f
 
 PODFILE CHECKSUM: c128cb0a2c4b74e9c63117890617ea8f12f8ae35
 
