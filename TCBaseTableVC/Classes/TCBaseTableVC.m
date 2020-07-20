@@ -26,6 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.beginPageNumber = 1;
     [self createTableView];
 }
 
@@ -136,7 +137,7 @@
         [_myTableView.mj_header endRefreshing];
         return;
     }
-    _pageNumber = 1;
+    _pageNumber = self.beginPageNumber;
     [self fetchListDataIsLoadMore:NO];
 }
 
@@ -166,7 +167,7 @@
             [weakSelf.myTableView.mj_footer endRefreshing];
             //请求失败或者请求接口数据数量为0，pageNumber减1
             if (error||datas.count==0) {
-                if (weakSelf.pageNumber>1) {
+                if (weakSelf.pageNumber>weakSelf.beginPageNumber) {
                     weakSelf.pageNumber --;
                 }
             }
@@ -179,7 +180,8 @@
                 }
                 //pageSize 单页最大条数
                 int tempPagesize = weakSelf.pageSize > 0 ? weakSelf.pageSize : kListPagesize;
-                if (datas.count < tempPagesize || (total > 0 && (total <= weakSelf.cellDataList.count || total <= weakSelf.pageNumber*tempPagesize))) {
+                int tempPageNum = weakSelf.pageNumber - weakSelf.beginPageNumber + 1;
+                if (datas.count < tempPagesize || (total > 0 && (total <= weakSelf.cellDataList.count || total <= tempPageNum * tempPagesize))) {
                     [weakSelf.myTableView.mj_footer endRefreshingWithNoMoreData];
                 }
             } else {

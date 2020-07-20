@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign) int pageNumber;                           //加载更多时候的请求分页页数
 @property (nonatomic, assign) int pageSize;                             //每一页多少行数据；当pageSize<=0时，使用kListPagesize
+@property (nonatomic,assign) int beginPageNumber;                       //pageNumber第一页的页数，默认是1。
 
 @property (nonatomic, assign) BOOL isForcePlainGroup;                   //在UITableViewStylePlain样式下是否进行分组
 

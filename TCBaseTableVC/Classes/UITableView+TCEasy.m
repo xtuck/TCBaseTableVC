@@ -134,6 +134,18 @@ int const kListPagesize = 10;
 - (int)pageNumber {
     NSNumber *num = objc_getAssociatedObject(self, _cmd);
     if (!num) {
+        return self.beginPageNumber;
+    }
+    return num.intValue;
+}
+
+#pragma mark- beginPageNumber
+- (void)setBeginPageNumber:(int)beginPageNumber {
+    objc_setAssociatedObject(self, @selector(beginPageNumber), @(beginPageNumber), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (int)beginPageNumber {
+    NSNumber *num = objc_getAssociatedObject(self, _cmd);
+    if (!num) {
         return 1;
     }
     return num.intValue;
@@ -168,7 +180,7 @@ int const kListPagesize = 10;
         [self.mj_header endRefreshing];
         return;
     }
-    self.pageNumber = 1;
+    self.pageNumber = self.beginPageNumber;
     [self fetchListDataIsLoadMore:NO];
 }
 
@@ -199,7 +211,7 @@ int const kListPagesize = 10;
             [weakSelf.mj_footer endRefreshing];
             //请求失败或者请求接口数据数量为0，pageNumber减1
             if (error||datas.count==0) {
-                if (weakSelf.pageNumber>1) {
+                if (weakSelf.pageNumber>self.beginPageNumber) {
                     weakSelf.pageNumber --;
                 }
             }
@@ -212,7 +224,8 @@ int const kListPagesize = 10;
                 }
                 //pageSize 单页最大条数
                 int tempPagesize = weakSelf.pageSize > 0 ? weakSelf.pageSize : kListPagesize;
-                if (datas.count < tempPagesize || (total > 0 && (total <= weakSelf.cellDataList.count || total <= weakSelf.pageNumber*tempPagesize))) {
+                int tempPageNum = weakSelf.pageNumber - weakSelf.beginPageNumber + 1;
+                if (datas.count < tempPagesize || (total > 0 && (total <= weakSelf.cellDataList.count || total <= tempPageNum * tempPagesize))) {
                     [weakSelf.mj_footer endRefreshingWithNoMoreData];
                 }
             } else {
