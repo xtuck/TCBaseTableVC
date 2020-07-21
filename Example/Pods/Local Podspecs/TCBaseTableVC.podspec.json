@@ -20,9 +20,6 @@
   },
   "source_files": "TCBaseTableVC/Classes/**/*",
   "dependencies": {
-    "Masonry": [
-
-    ],
     "MJRefresh": [
 
     ],

@@ -36,6 +36,9 @@
 - (NSObject *)fetchFeedWithIndexPath:(NSIndexPath *)indexPath;
 
 
+///UITableView与其superView的约束，没有使用Masonry，是为了降低耦合，不依赖第三方库。
+///使用了原生的自动布局约束，如果在其他地方需要用第三方库对UITableView重新添加约束，请调用此方法，删除旧的原生约束。
+- (void)removeTVAutoLayout;
 
 /// 强制改变TCBaseTableVC的父类，方便子类统一调用你自定义的vc基类的方法,子类中通过强转类型，来调用vc基类的方法
 //需要在使用TCBaseTableVC之前调用，建议在程序初始化的时候调用，谨慎使用！！！

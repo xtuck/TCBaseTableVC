@@ -1,10 +1,8 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
-  - Masonry (1.1.0)
   - MJRefresh (3.2.0)
   - TCBaseTableVC (0.1.1):
     - DZNEmptyDataSet
-    - Masonry
     - MJRefresh
 
 DEPENDENCIES:
@@ -13,7 +11,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - DZNEmptyDataSet
-    - Masonry
     - MJRefresh
 
 EXTERNAL SOURCES:
@@ -22,9 +19,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
-  TCBaseTableVC: 84651b96df98cfc40ec0006265eb6c5008cbf18f
+  TCBaseTableVC: b7add2481a065ddfeb1adcdf48b2914ab0f1d0a3
 
 PODFILE CHECKSUM: c128cb0a2c4b74e9c63117890617ea8f12f8ae35
 

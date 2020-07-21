@@ -138,7 +138,7 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
  */
 - (void)didSelectCellWithFeed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath;
 
-//获取列表数据
+//获取列表数据 //MARK:需扩展isDrag参数，判断是否是拖动加载数据
 - (void)fetchListData:(RequestListDataFinishBlock)finishBlock;
 
 //请求结束后的回调，便于统一处理error等逻辑
@@ -201,5 +201,9 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 - (NSInteger)easy_numberOfRowsInSection:(NSInteger)section;
 - (NSInteger)easy_numberOfSections;
 */
+
+///UITableView与其superView的约束，没有使用Masonry，是为了降低耦合，不依赖第三方库。
+///使用了原生的自动布局约束，如果在其他地方需要用第三方库对UITableView重新添加约束，请调用此方法，删除旧的原生约束。
+- (void)removeTVAutoLayout;
 
 @end

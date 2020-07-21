@@ -7,11 +7,11 @@
 //
 
 #import "TCBaseTableVC.h"
-#import <Masonry/Masonry.h>
 
 @interface TCBaseTableVC ()
 
 @property (nonatomic,assign,readwrite) BOOL isRequsting;                 //是否正在执行请求中
+@property (nonatomic,strong) NSMutableArray *tvConstraints;//添加的原生自动布局约束
 
 @end
 
@@ -22,6 +22,17 @@
         _cellDataList = [[NSMutableArray alloc] init];
     }
     return _cellDataList;
+}
+
+- (NSMutableArray *)tvConstraints {
+    if (!_tvConstraints) {
+        _tvConstraints = [[NSMutableArray alloc] init];
+    }
+    return _tvConstraints;
+}
+
+- (void)removeTVAutoLayout {
+    [NSLayoutConstraint deactivateConstraints:self.tvConstraints];
 }
 
 - (void)viewDidLoad {
@@ -52,16 +63,26 @@
         [self.view addSubview:_myTableView];
     }
     if (CGRectIsEmpty(_myTableView.frame)) {
-        [_myTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            if (@available(iOS 11.0, *)) {
-                make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-                make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
-                make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-            } else {
-                make.edges.equalTo(self.view);
-            }
-        }];
+        _myTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        id item = nil;
+        if (@available(iOS 11.0, *)) {
+            item = _myTableView.superview.safeAreaLayoutGuide;
+        } else {
+            item = _myTableView.superview;
+        }
+        NSArray *attributes = @[@(NSLayoutAttributeTop),@(NSLayoutAttributeBottom),@(NSLayoutAttributeLeft),@(NSLayoutAttributeRight)];
+        for (NSNumber *att in attributes) {
+            NSLayoutAttribute attribute = att.integerValue;
+            NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:_myTableView
+                                                                          attribute:attribute
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:item
+                                                                          attribute:attribute
+                                                                         multiplier:1.0
+                                                                           constant:0.0];
+            [self.tvConstraints addObject:constraint];
+        }
+        [NSLayoutConstraint activateConstraints:self.tvConstraints];
     }
     if (@available(ios 11.0,*)) {
         _myTableView.estimatedSectionHeaderHeight = 0;

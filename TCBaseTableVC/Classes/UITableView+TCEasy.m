@@ -6,7 +6,6 @@
 //
 
 #import "UITableView+TCEasy.h"
-#import <Masonry/Masonry.h>
 
 int const kListPagesize = 10;
 
@@ -15,10 +14,52 @@ int const kListPagesize = 10;
 @property (nonatomic,weak,readwrite) id<TCEasyTableViewDelegate> easyDelegate;
 @property (nonatomic,assign,readwrite) BOOL isRequsting;
 @property (nonatomic,assign,readwrite) int pageNumber;//加载更多时候的请求分页页数
+@property (nonatomic,strong) NSMutableArray *tvConstraints;//添加的原生自动布局约束
 
 @end
 
 @implementation UITableView (TCEasy)
+
+- (void)removeTVAutoLayout {
+    [NSLayoutConstraint deactivateConstraints:self.tvConstraints];
+}
+
+- (void)setupTVAutoLayout {
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    id item = nil;
+    if (@available(iOS 11.0, *)) {
+        item = self.superview.safeAreaLayoutGuide;
+    } else {
+        item = self.superview;
+    }
+    NSArray *attributes = @[@(NSLayoutAttributeTop),@(NSLayoutAttributeBottom),@(NSLayoutAttributeLeft),@(NSLayoutAttributeRight)];
+    [self.tvConstraints removeAllObjects];
+    for (NSNumber *att in attributes) {
+        NSLayoutAttribute attribute = att.integerValue;
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self
+                                                                      attribute:attribute
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:item
+                                                                      attribute:attribute
+                                                                     multiplier:1.0
+                                                                       constant:0.0];
+        [self.tvConstraints addObject:constraint];
+    }
+    [NSLayoutConstraint activateConstraints:self.tvConstraints];
+}
+
+#pragma mark- tvConstraints
+- (void)setTvConstraints:(NSMutableArray *)tvConstraints {
+    objc_setAssociatedObject(self, @selector(tvConstraints), tvConstraints, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (NSMutableArray *)tvConstraints {
+    NSMutableArray *array = objc_getAssociatedObject(self, _cmd);
+    if (array) {
+        array = [NSMutableArray array];
+        self.tvConstraints = array;
+    }
+    return array;
+}
 
 #pragma mark- isRequsting
 - (void)setIsRequsting:(BOOL)isRequsting {
@@ -300,20 +341,9 @@ int const kListPagesize = 10;
         //检查代理是否实现，运行时添加方法，需要方法设置tableView.delegate之前调用
         [UITableView checkProtocol:delegate.class];
         [addOnView addSubview:self];
-
         if (CGRectIsEmpty(self.frame) && self.superview) {
-            [self mas_makeConstraints:^(MASConstraintMaker *make) {
-                if (@available(iOS 11.0, *)) {
-                    make.top.equalTo(self.superview.mas_safeAreaLayoutGuideTop);
-                    make.bottom.equalTo(self.superview.mas_safeAreaLayoutGuideBottom);
-                    make.left.equalTo(self.superview.mas_safeAreaLayoutGuideLeft);
-                    make.right.equalTo(self.superview.mas_safeAreaLayoutGuideRight);
-                } else {
-                    make.edges.equalTo(self.superview);
-                }
-            }];
+            [self setupTVAutoLayout];
         }
-        
         if (@available(ios 11.0,*)) {
             self.estimatedSectionHeaderHeight = 0;
             self.estimatedSectionFooterHeight = 0;
