@@ -34,7 +34,7 @@ CellHelperMake(Class clazz, NSString *reuseId, BOOL isNib, UITableViewCellStyle 
 typedef struct {
     Class tvClass;                      //TableView对应的Class,传入nil时则使用UITableView.Class
     UITableViewStyle tvStyle;           //TableView创建时的样式
-    CGRect tvFrame;                     //TableView的frame,如果传入CGRectZero,则使用自动布局，与self.view同大小
+    CGRect tvFrame;                     //TableView的frame,如果传入CGRectZero,则使用自动布局
 } TableViewHelper;
 
 CG_INLINE TableViewHelper
@@ -66,20 +66,20 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 @protocol TCEasyTableViewDelegate <UITableViewDelegate,DZNEmptyDataSetDelegate,DZNEmptyDataSetSource>
 
 @optional
-
+//MARK:考虑协议方法中增加UITableView参数
 /**
  使用其他的tableView,例如xib上的tableView，或者自己创建的tableView
  优先级1
  @return TableView
  */
-- (UITableView *)useOtherTableView;
+- (UITableView *)useOtherTableView;//MARK:考虑简化删除该协议
 
 /**
  创建tableView所需要的参数
  优先级2
  @return 参数结构体
  */
-- (TableViewHelper)tableViewCreateParams;
+- (TableViewHelper)tableViewCreateParams;//MARK:考虑简化删除该协议
 
 /**
  设置cell相关参数
@@ -138,7 +138,7 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
  */
 - (void)didSelectCellWithFeed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath;
 
-//获取列表数据 //MARK:需扩展isDrag参数，判断是否是拖动加载数据
+//获取列表数据 //MARK:考虑扩展isDrag参数，判断是否是拖动加载数据
 - (void)fetchListData:(RequestListDataFinishBlock)finishBlock;
 
 //请求结束后的回调，便于统一处理error等逻辑
