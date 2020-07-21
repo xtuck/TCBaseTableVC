@@ -43,9 +43,9 @@ int const kListPagesize = 10;
                                                                       attribute:attribute
                                                                      multiplier:1.0
                                                                        constant:0.0];
+        constraint.active = YES;
         [self.tvConstraints addObject:constraint];
     }
-    [NSLayoutConstraint activateConstraints:self.tvConstraints];
 }
 
 #pragma mark- tvConstraints
