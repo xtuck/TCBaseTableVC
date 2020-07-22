@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TCBaseTableVC'
-  s.version          = '0.1.1'
+  s.version          = '0.1.3'
   s.summary          = 'TableView基类，列表使用更加方便，统一了数据请求和翻页逻辑'
 
 # This description is used to generate tags and improve search results.

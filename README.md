@@ -27,3 +27,44 @@ xtuck:104166631@qq.com
 ## License
 
 TCBaseTableVC is available under the MIT license. See the LICENSE file for more info.
+
+## 用法
+```
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self.tableView refreshWithDrag];
+}
+
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = UITableView.easyCreate(self,self.view);
+        _tableView.isShowRefreshView = YES;
+        _tableView.isShowLoadMoreView = YES;
+    }
+    return _tableView;
+}
+
+- (CellHelper)cellParamsFromFeed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath {
+    return CellHelperMake(MBAssetsTableCell.class, nil, YES, 0);
+}
+
+- (CGFloat)setCellHeightWithFeed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath {
+    return 88;//UITableViewAutomaticDimension
+}
+
+- (void)didSelectCellWithFeed:(NSObject *)feed indexPath:(NSIndexPath *)indexPath {
+    //点击cell
+}
+
+//请求网络数据
+- (void)fetchListData:(RequestListDataFinishBlock)finishBlock {
+    [TCContractApi fetchContractNoticeListWithPageNum:self.pageNumber pageSize:self.pageSize]
+    .l_parseModelClass_parseKey(FMNewsModel.class,@"#.list()") //解析dataKey中的list数组
+    .apiCall(^(TCContractApi *api){
+        finishBlock(api.resultParseObject,api.error,0);
+    });
+}
+
+
+```
