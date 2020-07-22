@@ -70,6 +70,7 @@
         } else {
             item = _myTableView.superview;
         }
+        [self.tvConstraints removeAllObjects];
         NSArray *attributes = @[@(NSLayoutAttributeTop),@(NSLayoutAttributeBottom),@(NSLayoutAttributeLeft),@(NSLayoutAttributeRight)];
         for (NSNumber *att in attributes) {
             NSLayoutAttribute attribute = att.integerValue;
@@ -80,9 +81,9 @@
                                                                           attribute:attribute
                                                                          multiplier:1.0
                                                                            constant:0.0];
+            constraint.active = YES;
             [self.tvConstraints addObject:constraint];
         }
-        [NSLayoutConstraint activateConstraints:self.tvConstraints];
     }
     if (@available(ios 11.0,*)) {
         _myTableView.estimatedSectionHeaderHeight = 0;
