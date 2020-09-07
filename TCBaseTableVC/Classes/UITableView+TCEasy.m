@@ -6,6 +6,7 @@
 //
 
 #import "UITableView+TCEasy.h"
+#import <Aspects/Aspects.h>
 
 int const kListPagesize = 10;
 
@@ -362,6 +363,14 @@ int const kListPagesize = 10;
         if ([delegate respondsToSelector:@selector(tableViewCreated:)]) {
             [delegate tableViewCreated:self];
         }
+        __weak typeof(self) weakSelf = self;
+        [(NSObject *)self.easyDelegate aspect_hookSelector:NSSelectorFromString(@"dealloc") withOptions:AspectPositionBefore usingBlock:^(id<AspectInfo> aspectInfo) {
+            weakSelf.easyDelegate = nil;
+            weakSelf.delegate = nil;
+            weakSelf.dataSource = nil;
+            weakSelf.emptyDataSetSource = nil;
+            weakSelf.emptyDataSetDelegate = nil;
+        } error:nil];
     };
 }
 
