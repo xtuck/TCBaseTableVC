@@ -1,8 +1,8 @@
 {
   "name": "TCBaseTableVC",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "summary": "TableView基类，列表使用更加方便，统一了数据请求和翻页逻辑",
-  "description": "TODO: Add long description of the pod here.",
+  "description": "暂时只支持UITableView，后期将扩展支持UICollectionView",
   "homepage": "https://github.com/xtuck/TCBaseTableVC",
   "license": {
     "type": "MIT",
@@ -13,10 +13,10 @@
   },
   "source": {
     "git": "https://github.com/xtuck/TCBaseTableVC.git",
-    "tag": "0.1.4"
+    "tag": "0.1.6"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "9.0"
   },
   "source_files": "TCBaseTableVC/Classes/**/*",
   "dependencies": {

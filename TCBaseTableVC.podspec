@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TCBaseTableVC'
-  s.version          = '0.1.5'
+  s.version          = '0.1.6'
   s.summary          = 'TableView基类，列表使用更加方便，统一了数据请求和翻页逻辑'
 
 # This description is used to generate tags and improve search results.
@@ -17,9 +17,7 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+  s.description      = '暂时只支持UITableView，后期将扩展支持UICollectionView'
 
   s.homepage         = 'https://github.com/xtuck/TCBaseTableVC'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
@@ -28,7 +26,7 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/xtuck/TCBaseTableVC.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'TCBaseTableVC/Classes/**/*'
   
