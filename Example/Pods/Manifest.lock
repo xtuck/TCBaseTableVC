@@ -1,7 +1,9 @@
 PODS:
+  - Aspects (1.4.1)
   - DZNEmptyDataSet (1.8.1)
   - MJRefresh (3.2.0)
-  - TCBaseTableVC (0.1.1):
+  - TCBaseTableVC (0.1.4):
+    - Aspects
     - DZNEmptyDataSet
     - MJRefresh
 
@@ -9,19 +11,22 @@ DEPENDENCIES:
   - TCBaseTableVC (from `../`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - DZNEmptyDataSet
     - MJRefresh
+  trunk:
+    - Aspects
 
 EXTERNAL SOURCES:
   TCBaseTableVC:
     :path: "../"
 
 SPEC CHECKSUMS:
+  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
-  TCBaseTableVC: b7add2481a065ddfeb1adcdf48b2914ab0f1d0a3
+  TCBaseTableVC: 2c7e447b2a05ba35667622dd90987e094433e76c
 
 PODFILE CHECKSUM: c128cb0a2c4b74e9c63117890617ea8f12f8ae35
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.10.0

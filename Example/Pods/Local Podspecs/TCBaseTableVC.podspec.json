@@ -1,6 +1,6 @@
 {
   "name": "TCBaseTableVC",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "summary": "TableView基类，列表使用更加方便，统一了数据请求和翻页逻辑",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/xtuck/TCBaseTableVC",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/xtuck/TCBaseTableVC.git",
-    "tag": "0.1.1"
+    "tag": "0.1.4"
   },
   "platforms": {
     "ios": "8.0"
@@ -24,6 +24,9 @@
 
     ],
     "DZNEmptyDataSet": [
+
+    ],
+    "Aspects": [
 
     ]
   }
