@@ -1,6 +1,0 @@
-framework module TCBaseTableVC {
-  umbrella header "TCBaseTableVC-umbrella.h"
-
-  export *
-  module * { export * }
-}
