@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TCBaseTableVC'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'TableView基类，列表使用更加方便，统一了数据请求和翻页逻辑'
 
 # This description is used to generate tags and improve search results.
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/xtuck/TCBaseTableVC.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'TCBaseTableVC/Classes/**/*'
   

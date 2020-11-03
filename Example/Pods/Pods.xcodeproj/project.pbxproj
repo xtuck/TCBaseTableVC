@@ -993,7 +993,31 @@
 			};
 			name = Debug;
 		};
-		3323BBE1578D8465FBF379BC13C5C868 /* Debug */ = {
+		4871A3F4344EA458D7A757E714B681D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54097346AE352E3233B3CD040D3F1588 /* TCBaseTableVC.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/TCBaseTableVC/TCBaseTableVC-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = TCBaseTableVC;
+				PRODUCT_NAME = TCBaseTableVC;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		49099AE3A5E11EA404CFE3D0267735A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 350B0B2E21188911FDD4FFE41E6AA76E /* TCBaseTableVC.debug.xcconfig */;
 			buildSettings = {
@@ -1001,7 +1025,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/TCBaseTableVC/TCBaseTableVC-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
@@ -1139,30 +1163,6 @@
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_MODULE_NAME = DZNEmptyDataSet;
 				PRODUCT_NAME = DZNEmptyDataSet;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		A890C39F4CDCC666A752FD5BA01A5684 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 54097346AE352E3233B3CD040D3F1588 /* TCBaseTableVC.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/TCBaseTableVC/TCBaseTableVC-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = TCBaseTableVC;
-				PRODUCT_NAME = TCBaseTableVC;
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1329,8 +1329,8 @@
 		DC7A24084F62558399E50977D47DAD55 /* Build configuration list for PBXNativeTarget "TCBaseTableVC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3323BBE1578D8465FBF379BC13C5C868 /* Debug */,
-				A890C39F4CDCC666A752FD5BA01A5684 /* Release */,
+				49099AE3A5E11EA404CFE3D0267735A1 /* Debug */,
+				4871A3F4344EA458D7A757E714B681D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
