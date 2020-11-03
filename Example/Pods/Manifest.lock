@@ -2,7 +2,7 @@ PODS:
   - Aspects (1.4.1)
   - DZNEmptyDataSet (1.8.1)
   - MJRefresh (3.5.0)
-  - TCBaseTableVC (0.1.6):
+  - TCBaseTableVC (0.1.4):
     - Aspects
     - DZNEmptyDataSet
     - MJRefresh
@@ -24,8 +24,8 @@ SPEC CHECKSUMS:
   Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   MJRefresh: 6afc955813966afb08305477dd7a0d9ad5e79a16
-  TCBaseTableVC: d49aa539c3bcef63757fec6bc1c4513b15731f3d
+  TCBaseTableVC: b779919585109d1586cfcc90fdbbdcc84150852a
 
-PODFILE CHECKSUM: b719dbbb0c9771e2e440ccb5f4354ec6a5cf9a34
+PODFILE CHECKSUM: 024dea46ec9775846a9cc147e870cadf426f1323
 
 COCOAPODS: 1.10.0
