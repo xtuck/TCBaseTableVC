@@ -28,7 +28,14 @@ xtuck:104166631@qq.com
 
 TCBaseTableVC is available under the MIT license. See the LICENSE file for more info.
 
-## 用法
+## 用法：使用“UITableView+TCEasy”分类即可，不需要使用TCBaseTableVC基类了
+
+```
+//引入头文件
+#import "UITableView+TCEasy.h"
+
+```
+
 ```
 
 - (void)viewDidLoad {
