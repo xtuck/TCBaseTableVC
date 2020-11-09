@@ -1,9 +1,7 @@
 PODS:
-  - Aspects (1.4.1)
   - DZNEmptyDataSet (1.8.1)
   - MJRefresh (3.5.0)
-  - TCBaseTableVC (0.1.5):
-    - Aspects
+  - TCBaseTableVC (0.1.6):
     - DZNEmptyDataSet
     - MJRefresh
 
@@ -12,7 +10,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Aspects
     - DZNEmptyDataSet
     - MJRefresh
 
@@ -21,10 +18,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   MJRefresh: 6afc955813966afb08305477dd7a0d9ad5e79a16
-  TCBaseTableVC: 44650e0804d7c94a1e536c6cfae3cb673327eae8
+  TCBaseTableVC: 531a13aff258b45605c64a799d71cc3245791c4f
 
 PODFILE CHECKSUM: 024dea46ec9775846a9cc147e870cadf426f1323
 
