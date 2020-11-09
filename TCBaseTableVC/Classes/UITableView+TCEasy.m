@@ -6,7 +6,6 @@
 //
 
 #import "UITableView+TCEasy.h"
-//#import <Aspects/Aspects.h>
 
 int const kListPagesize = 10;
 
