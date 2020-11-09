@@ -107,7 +107,7 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 - (void)customLoadMoreFooter:(UITableView *)tableView loadMoreSEL:(SEL)loadMoreSEL;
 
 /**
- 设置cell的高度，如果不实现，则使用自动布局
+ 设置cell的高度，如果不实现，则使用自动布局（特别注意：默认使用UITableViewAutomaticDimension，需要设置estimatedRowHeight的值）
  
  @param feed cell对应的数据model
  @param indexPath cell对应的indexPath
@@ -141,9 +141,6 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 //获取列表数据 //MARK:考虑扩展isDrag参数，判断是否是拖动加载数据
 - (void)fetchListData:(RequestListDataFinishBlock)finishBlock;
 
-//请求结束后的回调，便于统一处理error等逻辑
-- (void)fetchListDataEnd:(NSArray *)result error:(NSError *)error;
-
 @end
 
 @protocol TCEasyCheckProtocoleExtensions <NSObject>
@@ -157,6 +154,14 @@ typedef void (^RequestListDataFinishBlock) (NSArray *datas,NSError *error,int to
 
 /// 动态添加未实现的实例方法，如果已实现或已添加，则返回NO,如果未实现，则会添加，并返回YES
 - (BOOL)addUnrealizedProtocol:(SEL)sel imp:(IMP)imp types:(const char *)types;
+
+@end
+
+@interface TCWeakObjectContainer : NSObject
+
+@property (nonatomic, readonly, weak) id weakObject;
+
+- (instancetype)initWithWeakObject:(id)object;
 
 @end
 

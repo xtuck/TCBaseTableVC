@@ -6,7 +6,7 @@
 //
 
 #import "UITableView+TCEasy.h"
-#import <Aspects/Aspects.h>
+//#import <Aspects/Aspects.h>
 
 int const kListPagesize = 10;
 
@@ -55,7 +55,7 @@ int const kListPagesize = 10;
 }
 - (NSMutableArray *)tvConstraints {
     NSMutableArray *array = objc_getAssociatedObject(self, _cmd);
-    if (array) {
+    if (!array) {
         array = [NSMutableArray array];
         self.tvConstraints = array;
     }
@@ -73,10 +73,13 @@ int const kListPagesize = 10;
 
 #pragma mark- isForcePlainGroup
 - (void)setEasyDelegate:(id<TCEasyTableViewDelegate>)easyDelegate {
-    objc_setAssociatedObject(self, @selector(easyDelegate), easyDelegate, OBJC_ASSOCIATION_ASSIGN);
+    TCWeakObjectContainer *container = [[TCWeakObjectContainer alloc] initWithWeakObject:easyDelegate];
+    objc_setAssociatedObject(self, @selector(easyDelegate), container, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
+
 - (id<TCEasyTableViewDelegate>)easyDelegate {
-    return objc_getAssociatedObject(self, _cmd);
+    TCWeakObjectContainer *container = objc_getAssociatedObject(self, _cmd);
+    return container.weakObject;
 }
 
 #pragma mark- isShowEmptyData
@@ -245,9 +248,6 @@ int const kListPagesize = 10;
         __weak typeof(self) weakSelf = self;
         [self.easyDelegate fetchListData:^(NSArray *datas,NSError *error,int total) {
             weakSelf.isRequsting = NO;
-            if ([weakSelf.easyDelegate respondsToSelector:@selector(fetchListDataEnd:error:)]) {
-                [weakSelf.easyDelegate performSelector:@selector(fetchListDataEnd:error:) withObject:datas withObject:error];
-            }
             //停止动画
             [weakSelf.mj_header endRefreshing];
             [weakSelf.mj_footer endRefreshing];
@@ -264,18 +264,17 @@ int const kListPagesize = 10;
                 if (datas.count>0) {
                     [weakSelf.cellDataList addObjectsFromArray:datas];
                 }
-                //pageSize 单页最大条数
-                int tempPagesize = weakSelf.pageSize > 0 ? weakSelf.pageSize : kListPagesize;
-                int tempPageNum = weakSelf.pageNumber - weakSelf.beginPageNumber + 1;
-                if (datas.count < tempPagesize || (total > 0 && (total <= weakSelf.cellDataList.count || total <= tempPageNum * tempPagesize))) {
-                    [weakSelf.mj_footer endRefreshingWithNoMoreData];
-                }
-            } else {
-                //请求出错
-                if (weakSelf.cellDataList.count==0) {
-                    [weakSelf.mj_footer endRefreshingWithNoMoreData];
-                }
             }
+            
+            //pageSize 单页最大条数
+            int tempPagesize = weakSelf.pageSize > 0 ? weakSelf.pageSize : kListPagesize;
+            int tempPageNum = weakSelf.pageNumber - weakSelf.beginPageNumber + 1;
+            if (weakSelf.cellDataList.count==0 ||
+                datas.count < tempPagesize ||
+                (total > 0 && (total <= weakSelf.cellDataList.count || total <= tempPageNum * tempPagesize))) {
+                [weakSelf.mj_footer endRefreshingWithNoMoreData];
+            }
+
             [weakSelf reloadData];
             weakSelf.mj_footer.automaticallyChangeAlpha = (weakSelf.cellDataList.count==0);
         }];
@@ -363,6 +362,7 @@ int const kListPagesize = 10;
         if ([delegate respondsToSelector:@selector(tableViewCreated:)]) {
             [delegate tableViewCreated:self];
         }
+        /*
         __weak typeof(self) weakSelf = self;
         [(NSObject *)self.easyDelegate aspect_hookSelector:NSSelectorFromString(@"dealloc") withOptions:AspectPositionBefore usingBlock:^(id<AspectInfo> aspectInfo) {
             weakSelf.easyDelegate = nil;
@@ -371,6 +371,7 @@ int const kListPagesize = 10;
             weakSelf.emptyDataSetSource = nil;
             weakSelf.emptyDataSetDelegate = nil;
         } error:nil];
+        */
     };
 }
 
@@ -531,6 +532,21 @@ bool emptyDataShouldDisplay(id obj, SEL selector, UIScrollView *sc) {
         return YES;
     }
     return NO;
+}
+
+@end
+
+
+#pragma mark - TCWeakObjectContainer
+
+@implementation TCWeakObjectContainer
+
+- (instancetype)initWithWeakObject:(id)object {
+    self = [super init];
+    if (self) {
+        _weakObject = object;
+    }
+    return self;
 }
 
 @end

@@ -175,15 +175,16 @@
     [self fetchListDataIsLoadMore:YES];
 }
 
+- (void)fetchListDataEnd:(NSArray *)datas error:(NSError *)error {
+}
+
 - (void)fetchListDataIsLoadMore:(BOOL)isLoadMore {
     _isRequsting = YES;
     if ([self respondsToSelector:@selector(fetchListData:)]) {
         __weak typeof(self) weakSelf = self;
         [self fetchListData:^(NSArray *datas,NSError *error,int total) {
             weakSelf.isRequsting = NO;
-            if ([weakSelf respondsToSelector:@selector(fetchListDataEnd:error:)]) {
-                [weakSelf performSelector:@selector(fetchListDataEnd:error:) withObject:datas withObject:error];
-            }
+            [self fetchListDataEnd:datas error:error];
             //停止动画
             [weakSelf.myTableView.mj_header endRefreshing];
             [weakSelf.myTableView.mj_footer endRefreshing];

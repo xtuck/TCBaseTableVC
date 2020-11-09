@@ -40,6 +40,6 @@ Pod::Spec.new do |s|
   
   s.dependency 'MJRefresh'
   s.dependency 'DZNEmptyDataSet'
-  s.dependency 'Aspects'
+#  s.dependency 'Aspects'
 
 end
