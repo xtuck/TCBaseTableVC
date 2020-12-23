@@ -347,6 +347,9 @@ int const kListPagesize = 10;
             self.estimatedSectionHeaderHeight = 0;
             self.estimatedSectionFooterHeight = 0;
         }
+        if (self.estimatedRowHeight == UITableViewAutomaticDimension) {
+            self.estimatedRowHeight = 50;//使得cell高度默认支持UITableViewAutomaticDimension
+        }
         self.separatorInset = UIEdgeInsetsZero;
         self.layoutMargins = UIEdgeInsetsZero;
         self.tableFooterView = [[UIView alloc] init];
