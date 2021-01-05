@@ -40,6 +40,7 @@ TCBaseTableVC is available under the MIT license. See the LICENSE file for more 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //如果tableView是xib中的，则使用self.tableView.easyConfig(self,nil);
     [self.tableView refreshWithDrag];
 }
 
@@ -66,8 +67,8 @@ TCBaseTableVC is available under the MIT license. See the LICENSE file for more 
 
 //请求网络数据
 - (void)fetchListData:(RequestListDataFinishBlock)finishBlock {
-    [TCContractApi fetchContractNoticeListWithPageNum:self.pageNumber pageSize:self.pageSize]
-    .l_parseModelClass_parseKey(FMNewsModel.class,@"#.list()") //解析dataKey中的list数组
+    [TCContractApi fetchContractNoticeListWithPageNum:self.tableView.pageNumber pageSize:self.tableView.pageSize]
+    .l_parseModelClass_parseKey(TCNewsModel.class,@"#.list()") //解析dataKey中的list数组
     .apiCall(^(TCContractApi *api){
         finishBlock(api.resultParseObject,api.error,0);
     });
