@@ -23,6 +23,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		9638473A25A475DB00D2D08B /* UITableView+TCEasyExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9638473925A475DB00D2D08B /* UITableView+TCEasyExtensions.m */; };
 		96D8C5CE247D97F1008C9194 /* TCTableVCDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D8C5CD247D97F0008C9194 /* TCTableVCDemo.m */; };
 		A8D022FE9BF4CA40C11BF190 /* libPods-TCBaseTableVC_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 172560AFAAED8ED43FC0AE8D /* libPods-TCBaseTableVC_Tests.a */; };
 /* End PBXBuildFile section */
@@ -62,6 +63,8 @@
 		6FB2BA426060386FF1EE642E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9638473825A475DA00D2D08B /* UITableView+TCEasyExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+TCEasyExtensions.h"; sourceTree = "<group>"; };
+		9638473925A475DB00D2D08B /* UITableView+TCEasyExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+TCEasyExtensions.m"; sourceTree = "<group>"; };
 		96D8C5CC247D97F0008C9194 /* TCTableVCDemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCTableVCDemo.h; sourceTree = "<group>"; };
 		96D8C5CD247D97F0008C9194 /* TCTableVCDemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCTableVCDemo.m; sourceTree = "<group>"; };
 		DD13587D47F9D310F73E9A67 /* libPods-TCBaseTableVC_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TCBaseTableVC_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +156,8 @@
 				6003F5A6195388D20070C39A /* TCViewController.m */,
 				96D8C5CC247D97F0008C9194 /* TCTableVCDemo.h */,
 				96D8C5CD247D97F0008C9194 /* TCTableVCDemo.m */,
+				9638473825A475DA00D2D08B /* UITableView+TCEasyExtensions.h */,
+				9638473925A475DB00D2D08B /* UITableView+TCEasyExtensions.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -373,6 +378,7 @@
 				6003F5A7195388D20070C39A /* TCViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				96D8C5CE247D97F1008C9194 /* TCTableVCDemo.m in Sources */,
+				9638473A25A475DB00D2D08B /* UITableView+TCEasyExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
